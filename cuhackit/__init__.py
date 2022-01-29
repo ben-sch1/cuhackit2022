@@ -24,6 +24,12 @@ posts_pipe = mrsm.Pipe(
     columns = {"datetime": "time", "id": "postID"}
 )
 
+comments_pipe = mrsm.Pipe(
+    "data", "posts", instance = INSTANCE_LABEL,
+    #columns to create in database that will be used in the website
+    columns = {"datetime": "time", "id": "postID"}
+)
+
 @api_plugin
 def init_plugin(_app):
     """
