@@ -1,4 +1,4 @@
-from . import app, posts_pipe
+from . import app, posts_pipe, enforce_login
 from meerschaum.api import manager
 import meerschaum as mrsm
 import uuid
@@ -12,31 +12,20 @@ conn = mrsm.get_connector("sql", "local")
 def get_posts():
     return {'test': 'foo'}
 
-# @app.post('/posts')
-# def create_post(
-#         curr_user = fastapi.Depends(manager),
-#     ):
-#     print(curr_user.username)
-#     return {"username": curr_user.username}
+@app.post('/posts')
+def create_post(username: str):
+    enforce_login(username)
+    return {"username": username}
 
     #adding new data to the table (insert to table in SQL)
-    # posts_pipe.sync(
-    #     {
-    #         #uuid: rand hex generation
-    #         "postID": [str(uuid.uuid4())],
-    #         #get current time
-    #         "time": [datetime.datetime.utcnow()],
-    #         #"user": user
-    #
-    #     }
-    # )
-    # return {'test': 'foo'}
+    posts_pipe.sync(
+        {
+            #uuid: rand hex generation
+            "postID": [str(uuid.uuid4())],
+            #get current time
+            "time": [datetime.datetime.utcnow()],
+            "user": user
 
-# @app.post('/user')
-# def create_user():
-#     return
-#
-#
-# @app.post('/post/comment')
-# def create_comment():
-#     return
+        }
+    )
+    return {'test': 'foo'}
