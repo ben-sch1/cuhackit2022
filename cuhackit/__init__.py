@@ -27,6 +27,12 @@ posts_pipe = mrsm.Pipe(
     columns = {"datetime": "time", "id": "postID"}
 )
 
+comments_pipe = mrsm.Pipe(
+    "data", "comments", instance = INSTANCE_LABEL,
+    #columns to create in database that will be used in the website
+    columns = {"datetime": "time", "id": "commentID"}
+)
+
 @api_plugin
 def init_plugin(_app):
     """
@@ -34,15 +40,4 @@ def init_plugin(_app):
     """
     global app
     app = _app
-
-    # from meerschaum.api._oauth2
-    # from meerschaum.api.routes._login import load_user, login
-    # from .posts import get_posts
-
-    # from meerschaum.api import manager
-    import fastapi
-
-    @app.get('/bar')
-    def bar(username: Optional[str] = Cookie(None)):
-        enforce_login(username)
-        return {'bar': 'foo'}
+    from .comment import create_comment

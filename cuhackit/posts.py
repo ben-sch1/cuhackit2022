@@ -9,7 +9,15 @@ import fastapi
 conn = mrsm.get_connector("sql", "local")
 
 
-@app.get('/posts')
+@app.post('/post')
+def create_post(postID: str):
+    posts_pipe.sync(
+        {
+            "postID" : [str(uuid.uuid4())],
+            "time": [datetime.datetime.utcnow()],
+        }
+    )
+
 def get_posts():
     '''
     Return an array of dictionaries
