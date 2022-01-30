@@ -1,4 +1,4 @@
-from . import app, comments_pipe
+from cuhackit import app, comments_pipe
 from typing import Dict
 import meerschaum as mrsm
 import uuid
