@@ -37,8 +37,8 @@ function addCard(card)
   cards_list = document.getElementById("cards-list");
   li = document.createElement('li');
   li.innerHTML = card_html;
-  cards_list.appendChild(li);
-  eElement.insertBefore(li, eElement.firstChild);
+  // cards_list.appendChild(li);
+  cards_list.insertBefore(li, cards_list.firstChild);
 }
 function submitPost(){
     title_box = document.getElementById("title-box");
