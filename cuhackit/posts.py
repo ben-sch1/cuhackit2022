@@ -1,4 +1,4 @@
-from . import app, posts_pipe, enforce_login
+from cuhackit import app, posts_pipe
 from meerschaum.api import manager
 import meerschaum as mrsm
 import uuid
