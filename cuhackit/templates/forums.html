@@ -10,6 +10,18 @@
 
     <!-- Javascript post creation-->
     <script>
+        function addCard(card)
+        {
+          card_html = `
+          <div class="card" style="width: 18rem; height: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">${card["title"]}</h5>
+              <p class="card-text">${card["value"]}</p>
+            </div>
+          </div>`
+          cards_div = document.getElementById("card-div");
+          cards_div.innerHTML += card_html;
+        }
         function submitPost(){
             new_post_box = document.getElementById("new-post-box");
             $.ajax({
@@ -21,7 +33,7 @@
                 for (e of data)
                 {
                     console.log(e);
-                    output_div.innerHTML += ("");
+                    output_div.innerHTML += ();
                 }
             })
         }
@@ -137,12 +149,7 @@
 
 
 
-          <div class="card" style="width: 18rem; height: 18rem;">
-            <div class="card-body">
-              <h5 class="card-title">Card title</h5>
-              <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-          </div>
+          
 
 
 
