@@ -6,11 +6,24 @@ import datetime
 
 conn = mrsm.get_connector("sql","local")
 
-@app.get('/comments')
-def get_comments():
-    return{'test':'foo'}
+@app.get('/post/{postID}/comments')
+def get_comments(postID: str):
 
-@app.post('/post/{postID}/comment')
+    '''
+    Return an array of dictionaries
+    '''
+
+    #format string, insecure
+    query = f'''
+        SELECT *
+        FROM data_comments
+        WHERE "postID" = '{postID}'
+        '''
+
+    #executes the query and returns the data table as dictionaries
+    return conn.exec(query).mappings().all()
+
+@app.post('/post/{postID}/comments')
 def create_comment(postID: str, content: Dict[str, str]):
     comments_pipe.sync(
         {
