@@ -22,7 +22,7 @@ def create_post():
         "postID": postID,
     }
 
-
+@app.get('/post')
 def get_posts():
 
     '''
@@ -36,4 +36,3 @@ def get_posts():
 
     #executes the query and returns the data table as dictionaries
     return conn.exec(query).mappings().all()
-    
