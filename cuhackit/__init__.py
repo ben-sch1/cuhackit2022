@@ -1,18 +1,14 @@
-### ~/.config/meerschaum/plugins/example.py
-
-from meerschaum.plugins import api_plugin
 from typing import Optional
 from fastapi import Cookie, FastAPI
+import pathlib
 
-app = None
+#Package Root Directory is the root folder (cuhackit)
+# / concats the new folder onto the previous dir ^
+PACKAGE_ROOT_DIR = pathlib.Path(__file__).parent
+IMAGES_DIR = PACKAGE_ROOT_DIR / 'images'
+TEMPLATES_DIR = PACKAGE_ROOT_DIR / 'templates'
 
-#ensure that the username of a post or comment is not blank
-def enforce_login(username):
-    """
-    Make sure the username cookie is set.
-    """
-    if username is None:
-        raise Exception("Not authenticated!")
+app = FastAPI()
 
 #the database we are working with
 INSTANCE_LABEL = "sql:local"
@@ -33,11 +29,24 @@ comments_pipe = mrsm.Pipe(
     columns = {"datetime": "time", "id": "commentID"}
 )
 
-@api_plugin
-def init_plugin(_app):
-    """
-    This function is executed immediately after the `app` is initialized.
-    """
-    global app
-    app = _app
-    from .comment import create_comment
+
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+
+app.mount("/images", StaticFiles(directory=str(IMAGES_DIR)), name="images")
+
+templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
+
+@app.get("/", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request,})
+
+@app.get("/forums", response_class=HTMLResponse)
+async def index(request: Request):
+    return templates.TemplateResponse("forums.html", {"request": request,})
+
+
+import cuhackit.comment
+import cuhackit.posts
