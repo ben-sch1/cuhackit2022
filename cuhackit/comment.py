@@ -4,6 +4,7 @@ from typing import Dict
 import meerschaum as mrsm
 import uuid
 import datetime
+import pandas as pd
 
 conn = mrsm.get_connector("sql","local")
 
@@ -29,11 +30,10 @@ def create_comment(postID: str, content: Dict[str, str]):
     commentID = str(uuid.uuid4())
     data = {
         "content" : [content.get("value", "Oopsie!")],
-        "commentID" : commentID,
+        "commentID" : [commentID],
         "postID" : [postID],
         "time": [datetime.datetime.utcnow()],
     }
-    comments_pipe.sync(
-        data 
-    )
+    df = pd.DataFrame(data)
+    comments_pipe.sync(df)
     return data
