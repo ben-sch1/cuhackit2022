@@ -25,7 +25,7 @@ function addCard(card)
     <div class="card-body">
       <h5 class="card-title">${card["title"]}</h5>`
       if (val.startsWith("http")){
-        card_html += `<img src="card-text">${card["value"]}</p>`;
+        card_html += `<img src="${card["value"]}">`;
       } else {
         card_html += `<p class="card-text">${card["value"]}</p>`;
       }
@@ -38,6 +38,7 @@ function addCard(card)
   li = document.createElement('li');
   li.innerHTML = card_html;
   cards_list.appendChild(li);
+  eElement.insertBefore(li, eElement.firstChild);
 }
 function submitPost(){
     title_box = document.getElementById("title-box");
