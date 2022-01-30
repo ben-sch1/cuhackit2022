@@ -1,8 +1,10 @@
 from cuhackit import app, comments_pipe
+from meerschaum.api import manager
 from typing import Dict
 import meerschaum as mrsm
 import uuid
 import datetime
+import pandas as pd
 
 conn = mrsm.get_connector("sql","local")
 
@@ -25,11 +27,13 @@ def get_comments(postID: str):
 
 @app.post('/post/{postID}/comments')
 def create_comment(postID: str, content: Dict[str, str]):
-    comments_pipe.sync(
-        {
-            "content" : [content.get("value", "Oopsie!")],
-            "commentId" : [str(uuid.uuid4())],
-            "postID" : [postID],
-            "time": [datetime.datetime.utcnow()],
-        }
-    )
+    commentID = str(uuid.uuid4())
+    data = {
+        "content" : [content.get("value", "Oopsie!")],
+        "commentID" : [commentID],
+        "postID" : [postID],
+        "time": [datetime.datetime.utcnow()],
+    }
+    df = pd.DataFrame(data)
+    comments_pipe.sync(df)
+    return data

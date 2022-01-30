@@ -10,15 +10,19 @@ conn = mrsm.get_connector("sql", "local")
 
 #connect to endpoint /post
 @app.post('/post')
-def create_post(postID: str):
+def create_post():
+    postID = str(uuid.uuid4())
     posts_pipe.sync(
         {
-            "postID" : [str(uuid.uuid4())],
+            "postID" : [postID],
             "time": [datetime.datetime.utcnow()],
         }
     )
+    return {
+        "postID": postID,
+    }
 
-
+@app.get('/post')
 def get_posts():
 
     '''
@@ -32,17 +36,3 @@ def get_posts():
 
     #executes the query and returns the data table as dictionaries
     return conn.exec(query).mappings().all()
-
-@app.post('/posts')
-def create_post():
-
-    #adding new data to the table (insert to table in SQL)
-    return posts_pipe.sync(
-        {
-            #uuid: rand hex generation
-            "postID": [str(uuid.uuid4())],
-            #get current time
-            "time": [datetime.datetime.utcnow()]
-
-        }
-    )
