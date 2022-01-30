@@ -9,11 +9,6 @@ import fastapi
 conn = mrsm.get_connector("sql", "local")
 
 
-@app.get('/posts')
-<<<<<<< HEAD
-def get_comments():
-    return{'test':'foo'}
-
 @app.post('/post')
 def create_post(postID: str):
     posts_pipe.sync(
@@ -22,7 +17,7 @@ def create_post(postID: str):
             "time": [datetime.datetime.utcnow()],
         }
     )
-=======
+
 def get_posts():
     '''
     Return an array of dictionaries
@@ -32,7 +27,6 @@ def get_posts():
         SELECT *
         FROM data_posts
             '''
->>>>>>> fdf97d19538002d4657676a5a8ac71539173f8ed
 
     #executes the query and returns the data table as dictionaries
     return conn.exec(query).mappings().all()
