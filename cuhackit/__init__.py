@@ -7,6 +7,7 @@ import pathlib
 PACKAGE_ROOT_DIR = pathlib.Path(__file__).parent
 IMAGES_DIR = PACKAGE_ROOT_DIR / 'images'
 TEMPLATES_DIR = PACKAGE_ROOT_DIR / 'templates'
+STATIC_DIR = PACKAGE_ROOT_DIR / 'static'
 
 app = FastAPI()
 
@@ -36,6 +37,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 app.mount("/images", StaticFiles(directory=str(IMAGES_DIR)), name="images")
+app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 

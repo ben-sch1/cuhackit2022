@@ -10,7 +10,6 @@ conn = mrsm.get_connector("sql","local")
 
 @app.get('/post/{postID}/comments')
 def get_comments(postID: str):
-
     '''
     Return an array of dictionaries
     '''
