@@ -8,7 +8,7 @@ import fastapi
 #allow us to connect to the sql database on the sever
 conn = mrsm.get_connector("sql", "local")
 
-
+#connect to endpoint /post
 @app.post('/post')
 def create_post(postID: str):
     posts_pipe.sync(
@@ -18,7 +18,9 @@ def create_post(postID: str):
         }
     )
 
+
 def get_posts():
+
     '''
     Return an array of dictionaries
     '''
