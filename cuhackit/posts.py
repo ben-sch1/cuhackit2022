@@ -8,24 +8,31 @@ import fastapi
 #allow us to connect to the sql database on the sever
 conn = mrsm.get_connector("sql", "local")
 
+
 @app.get('/posts')
 def get_posts():
-    return {'test': 'foo'}
+    '''
+    Return an array of dictionaries
+    '''
+
+    query = '''
+        SELECT *
+        FROM data_posts
+            '''
+
+    #executes the query and returns the data table as dictionaries
+    return conn.exec(query).mappings().all()
 
 @app.post('/posts')
-def create_post(username: str):
-    enforce_login(username)
-    return {"username": username}
+def create_post():
 
     #adding new data to the table (insert to table in SQL)
-    posts_pipe.sync(
+    return posts_pipe.sync(
         {
             #uuid: rand hex generation
             "postID": [str(uuid.uuid4())],
             #get current time
-            "time": [datetime.datetime.utcnow()],
-            "user": user
+            "time": [datetime.datetime.utcnow()]
 
         }
     )
-    return {'test': 'foo'}
